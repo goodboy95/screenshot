@@ -1,0 +1,25 @@
+<Window x:Class="WpfScreenshotApp.Views.OverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        KeyDown="OnKeyDown"
+        MouseLeftButtonDown="OnMouseLeftButtonDown"
+        MouseMove="OnMouseMove"
+        MouseLeftButtonUp="OnMouseLeftButtonUp">
+    <Grid>
+        <Image x:Name="ScreenshotImage" Stretch="Fill" />
+        <Rectangle Fill="#80000000" />
+        <Canvas x:Name="SelectionCanvas" Background="Transparent">
+            <Border x:Name="SelectionBorder"
+                    BorderBrush="#FF64B5F6"
+                    BorderThickness="2"
+                    Background="#40FFFFFF"
+                    Visibility="Collapsed" />
+        </Canvas>
+    </Grid>
+</Window>
