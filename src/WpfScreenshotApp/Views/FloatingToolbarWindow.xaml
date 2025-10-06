@@ -7,13 +7,14 @@
         ShowInTaskbar="False"
         Topmost="True"
         ResizeMode="NoResize"
-        Focusable="False">
-    <Border Background="#F0FFFFFF" CornerRadius="12" BorderBrush="#FF1E88E5" BorderThickness="1" Padding="8">
-        <StackPanel Orientation="Horizontal">
-            <Button Content="固定" Width="60" Click="OnPinClick" />
-            <Button Content="编辑" Width="60" Click="OnEditClick" />
-            <Button Content="保存" Width="60" Click="OnSaveClick" />
-            <Button Content="取消" Width="60" Click="OnCancelClick" />
+        Focusable="False"
+        SizeToContent="WidthAndHeight">
+    <Border Background="#F0FFFFFF" CornerRadius="10" BorderBrush="#FF1E88E5" BorderThickness="1" Padding="6">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Button Content="固定" MinWidth="44" Height="30" FontSize="12" Padding="6,2" Margin="0,0,6,0" Click="OnPinClick" />
+            <Button Content="编辑" MinWidth="44" Height="30" FontSize="12" Padding="6,2" Margin="0,0,6,0" Click="OnEditClick" />
+            <Button Content="保存" MinWidth="44" Height="30" FontSize="12" Padding="6,2" Margin="0,0,6,0" Click="OnSaveClick" />
+            <Button Content="取消" MinWidth="44" Height="30" FontSize="12" Padding="6,2" Click="OnCancelClick" />
         </StackPanel>
     </Border>
 </Window>

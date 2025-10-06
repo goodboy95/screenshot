@@ -25,12 +25,12 @@ public partial class App : System.Windows.Application
 
         _hotkeyService = new HotkeyService();
         _hotkeyService.HotkeyPressed += (_, _) => StartCapture();
-        if (!_hotkeyService.RegisterHotkey(ModifierKeys.Control | ModifierKeys.Alt, System.Windows.Forms.Keys.End))
+        if (!_hotkeyService.RegisterHotkey(ModifierKeys.Control | ModifierKeys.Alt, System.Windows.Forms.Keys.A))
         {
-            System.Windows.Forms.MessageBox.Show("无法注册全局热键 Ctrl+Alt+End，可能已被其他程序占用。", "WPF Screenshot", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            System.Windows.Forms.MessageBox.Show("无法注册全局热键 Ctrl+Alt+A，可能已被其他程序占用。", "WPF Screenshot", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        Dispatcher.BeginInvoke(new Action(() => _trayIconService?.ShowBalloonTip("已启动", "按 Ctrl+Alt+End 开始截图")));
+        Dispatcher.BeginInvoke(new Action(() => _trayIconService?.ShowBalloonTip("已启动", "按 Ctrl+Alt+A 开始截图")));
     }
 
     private void StartCapture()
