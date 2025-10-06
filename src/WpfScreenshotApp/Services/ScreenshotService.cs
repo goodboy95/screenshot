@@ -61,13 +61,14 @@ public class ScreenshotService : IDisposable
         SaveScreenshot(_latestResult);
     }
 
-    private void OnSelectionCompleted(object? sender, Rect rect)
+    private void OnSelectionCompleted(object? sender, SelectionCompletedEventArgs e)
     {
         if (_overlayWindow == null || _fullScreenshot == null)
         {
             return;
         }
 
+        var rect = e.Selection;
         var cropRect = new Rectangle(
             (int)Math.Round(rect.X - _virtualBounds.Left),
             (int)Math.Round(rect.Y - _virtualBounds.Top),
@@ -89,8 +90,7 @@ public class ScreenshotService : IDisposable
             _clipboardService.CopyImage(bitmapSource);
         });
 
-        ShowToolbar(rect);
-        _overlayWindow.Close();
+        ShowToolbar(e.ReleasePoint);
     }
 
     private void OnSelectionCanceled(object? sender, EventArgs e)
@@ -98,7 +98,7 @@ public class ScreenshotService : IDisposable
         _overlayWindow?.Close();
     }
 
-    private void ShowToolbar(Rect selectionRect)
+    private void ShowToolbar(Point releasePoint)
     {
         CloseToolbar();
         if (_latestResult == null)
@@ -106,15 +106,18 @@ public class ScreenshotService : IDisposable
             return;
         }
 
-        _toolbarWindow = new FloatingToolbarWindow();
+        _toolbarWindow = new FloatingToolbarWindow
+        {
+            Owner = _overlayWindow
+        };
         _toolbarWindow.PinRequested += (_, _) => PinLatest();
         _toolbarWindow.EditRequested += (_, _) => EditLatest();
         _toolbarWindow.SaveRequested += (_, _) => SaveLatest();
         _toolbarWindow.CancelRequested += (_, _) => CancelLatest();
         _toolbarWindow.Loaded += (_, _) =>
         {
-            var bottomRight = new Point(selectionRect.Right + 12, selectionRect.Bottom + 12);
-            _toolbarWindow.PlaceAt(bottomRight, _virtualBounds);
+            var anchorPoint = new Point(releasePoint.X + 12, releasePoint.Y + 12);
+            _toolbarWindow.PlaceAt(anchorPoint, _virtualBounds);
         };
         _toolbarWindow.Closed += (_, _) => _toolbarWindow = null;
         _toolbarWindow.Show();
@@ -129,6 +132,7 @@ public class ScreenshotService : IDisposable
 
         _stickyImageService.ShowStickyImage(_latestResult.Image);
         CloseToolbar();
+        _overlayWindow?.Close();
     }
 
     private void EditLatest()
@@ -166,6 +170,7 @@ public class ScreenshotService : IDisposable
         }
 
         CloseToolbar();
+        _overlayWindow?.Close();
     }
 
     private void SaveLatest()
@@ -177,11 +182,13 @@ public class ScreenshotService : IDisposable
 
         SaveScreenshot(_latestResult);
         CloseToolbar();
+        _overlayWindow?.Close();
     }
 
     private void CancelLatest()
     {
         CloseToolbar();
+        _overlayWindow?.Close();
     }
 
     private void SaveScreenshot(ScreenshotResult result)
@@ -266,6 +273,7 @@ public class ScreenshotService : IDisposable
 
     private void ClearOverlay()
     {
+        CloseToolbar();
         _overlayWindow = null;
         _fullScreenshot?.Dispose();
         _fullScreenshot = null;

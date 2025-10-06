@@ -10,6 +10,10 @@ public partial class StickyImageWindow : Window
     {
         InitializeComponent();
         StickyImage.Source = image;
+        var dpiX = image.DpiX <= 0 ? 96d : image.DpiX;
+        var dpiY = image.DpiY <= 0 ? 96d : image.DpiY;
+        StickyImage.Width = image.PixelWidth * 96d / dpiX;
+        StickyImage.Height = image.PixelHeight * 96d / dpiY;
     }
 
     private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

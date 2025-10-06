@@ -3,15 +3,17 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using WpfScreenshotApp.Models;
 
 namespace WpfScreenshotApp.Views;
 
 public partial class OverlayWindow : Window
 {
     private System.Windows.Point? _startPoint;
+    private bool _selectionFinalized;
     private readonly Rect _virtualBounds;
 
-    public event EventHandler<Rect>? SelectionCompleted;
+    public event EventHandler<SelectionCompletedEventArgs>? SelectionCompleted;
     public event EventHandler? SelectionCanceled;
 
     public OverlayWindow(BitmapSource screenshot, Rect virtualBounds)
@@ -35,6 +37,11 @@ public partial class OverlayWindow : Window
 
     private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
+        if (_selectionFinalized)
+        {
+            return;
+        }
+
         _startPoint = e.GetPosition(SelectionCanvas);
         Canvas.SetLeft(SelectionBorder, _startPoint.Value.X);
         Canvas.SetTop(SelectionBorder, _startPoint.Value.Y);
@@ -46,7 +53,7 @@ public partial class OverlayWindow : Window
 
     private void OnMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
     {
-        if (_startPoint == null || e.LeftButton != MouseButtonState.Pressed)
+        if (_selectionFinalized || _startPoint == null || e.LeftButton != MouseButtonState.Pressed)
         {
             return;
         }
@@ -65,7 +72,7 @@ public partial class OverlayWindow : Window
 
     private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
-        if (_startPoint == null)
+        if (_selectionFinalized || _startPoint == null)
         {
             return;
         }
@@ -84,7 +91,12 @@ public partial class OverlayWindow : Window
             return;
         }
 
-        SelectionCompleted?.Invoke(this, new Rect(x + _virtualBounds.Left, y + _virtualBounds.Top, width, height));
+        _selectionFinalized = true;
+        Cursor = System.Windows.Input.Cursors.Arrow;
+
+        var selection = new Rect(x + _virtualBounds.Left, y + _virtualBounds.Top, width, height);
+        var releasePoint = new System.Windows.Point(currentPoint.X + _virtualBounds.Left, currentPoint.Y + _virtualBounds.Top);
+        SelectionCompleted?.Invoke(this, new SelectionCompletedEventArgs(selection, releasePoint));
     }
 
     private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
