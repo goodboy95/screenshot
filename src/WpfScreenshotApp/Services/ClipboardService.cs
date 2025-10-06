@@ -7,6 +7,6 @@ public class ClipboardService
 {
     public void CopyImage(BitmapSource image)
     {
-        Clipboard.SetImage(image);
+        System.Windows.Clipboard.SetImage(image);
     }
 }

@@ -9,7 +9,7 @@
         ResizeMode="NoResize"
         Focusable="False">
     <Border Background="#F0FFFFFF" CornerRadius="12" BorderBrush="#FF1E88E5" BorderThickness="1" Padding="8">
-        <StackPanel Orientation="Horizontal" Spacing="8">
+        <StackPanel Orientation="Horizontal">
             <Button Content="固定" Width="60" Click="OnPinClick" />
             <Button Content="编辑" Width="60" Click="OnEditClick" />
             <Button Content="保存" Width="60" Click="OnSaveClick" />

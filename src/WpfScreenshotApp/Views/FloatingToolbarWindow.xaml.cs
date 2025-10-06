@@ -15,7 +15,7 @@ public partial class FloatingToolbarWindow : Window
         InitializeComponent();
     }
 
-    public void PlaceAt(Point position, Rect bounds)
+    public void PlaceAt(System.Windows.Point position, Rect bounds)
     {
         UpdateLayout();
         var width = double.IsNaN(Width) || Width == 0 ? ActualWidth : Width;

@@ -186,7 +186,7 @@ public class ScreenshotService : IDisposable
 
     private void SaveScreenshot(ScreenshotResult result)
     {
-        var dialog = new SaveFileDialog
+        var dialog = new Microsoft.Win32.SaveFileDialog
         {
             Filter = "PNG Image (*.png)|*.png|JPEG Image (*.jpg)|*.jpg",
             FileName = $"screenshot-{result.CapturedAt:yyyyMMddHHmmss}"

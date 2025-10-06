@@ -8,7 +8,7 @@ namespace WpfScreenshotApp.Views;
 
 public partial class OverlayWindow : Window
 {
-    private Point? _startPoint;
+    private System.Windows.Point? _startPoint;
     private readonly Rect _virtualBounds;
 
     public event EventHandler<Rect>? SelectionCompleted;
@@ -23,7 +23,7 @@ public partial class OverlayWindow : Window
         Height = virtualBounds.Height;
         Left = virtualBounds.Left;
         Top = virtualBounds.Top;
-        Cursor = Cursors.Cross;
+        Cursor = System.Windows.Input.Cursors.Cross;
     }
 
     protected override void OnSourceInitialized(EventArgs e)
@@ -44,7 +44,7 @@ public partial class OverlayWindow : Window
         CaptureMouse();
     }
 
-    private void OnMouseMove(object sender, MouseEventArgs e)
+    private void OnMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
     {
         if (_startPoint == null || e.LeftButton != MouseButtonState.Pressed)
         {
@@ -87,7 +87,7 @@ public partial class OverlayWindow : Window
         SelectionCompleted?.Invoke(this, new Rect(x + _virtualBounds.Left, y + _virtualBounds.Top, width, height));
     }
 
-    private void OnKeyDown(object sender, KeyEventArgs e)
+    private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
         if (e.Key == Key.Escape)
         {

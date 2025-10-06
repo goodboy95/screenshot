@@ -5,7 +5,7 @@ using WpfScreenshotApp.Services;
 
 namespace WpfScreenshotApp;
 
-public partial class App : Application
+public partial class App : System.Windows.Application
 {
     private TrayIconService? _trayIconService;
     private HotkeyService? _hotkeyService;
@@ -27,7 +27,7 @@ public partial class App : Application
         _hotkeyService.HotkeyPressed += (_, _) => StartCapture();
         if (!_hotkeyService.RegisterHotkey(ModifierKeys.Control | ModifierKeys.Alt, System.Windows.Forms.Keys.End))
         {
-            MessageBox.Show("无法注册全局热键 Ctrl+Alt+End，可能已被其他程序占用。", "WPF Screenshot", MessageBoxButton.OK, MessageBoxImage.Warning);
+            System.Windows.Forms.MessageBox.Show("无法注册全局热键 Ctrl+Alt+End，可能已被其他程序占用。", "WPF Screenshot", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         Dispatcher.BeginInvoke(new Action(() => _trayIconService?.ShowBalloonTip("已启动", "按 Ctrl+Alt+End 开始截图")));
